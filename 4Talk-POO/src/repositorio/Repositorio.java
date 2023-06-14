@@ -1,5 +1,7 @@
 package repositorio;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.TreeMap;
 
 import modelo.Mensagem;
@@ -13,6 +15,40 @@ public class Repositorio {
 	public Repositorio() {
 		this.participantes = new TreeMap<String, Participante>();
 		this.mensagens = new TreeMap<Integer, Mensagem>();
+	}
+	
+	public void carregarObjetos() {
+		try {
+			File grupos = new File(new File(".\\grupos.csv").getCanonicalPath());
+			File mensagens = new File(new File(".\\mensagens.csv").getCanonicalPath());
+			File individuos = new File(new File(".\\individuos.csv").getCanonicalPath());
+			
+			if (!grupos.exists() || !mensagens.exists() || !individuos.exists()) {
+				FileWriter arquivo_grupos = new FileWriter(grupos);
+				arquivo_grupos.close();
+				
+				FileWriter arquivo_mensagens = new FileWriter(mensagens);
+				arquivo_mensagens.close();
+				
+				FileWriter arquivo_individuos = new FileWriter(individuos);
+				arquivo_individuos.close();
+				
+				return;
+			}
+			
+		} catch (Exception ex) {
+			throw new RuntimeException("Criacao dos arquivos vazios: " + ex.getMessage());
+		}
+		
+		String linha;
+		String[] partes;
+		
+		// TODO - terminar este método
+		
+	}
+	
+	public void salvarObjetos() {
+		
 	}
 	
 	public void adicionarParticipante(Participante participante) {
