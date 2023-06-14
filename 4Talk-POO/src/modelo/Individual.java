@@ -6,14 +6,12 @@ public class Individual extends Participante {
 
 	private String senha;
 	private boolean administrador;
-	private ArrayList<Mensagem> enviadas;
 	private ArrayList<Grupo> grupos;
 	
 	public Individual(String nome, String senha, boolean administrador) {
 		super(nome);
 		this.senha = senha;
 		this.administrador = administrador;
-		this.enviadas = new ArrayList<Mensagem>();
 		this.grupos = new ArrayList<Grupo>();
 	}
 	
@@ -33,22 +31,6 @@ public class Individual extends Participante {
 		return null;
 	}
 	
-	public void adicionarMensagem(Mensagem mensagem) {
-		enviadas.add(mensagem);
-	}
-	
-	public void removerMensagem(Mensagem mensagem) {
-		enviadas.remove(mensagem);
-	}
-	
-	public Mensagem localizarMensagem(int id){
-		for(Mensagem m: enviadas){
-			if(m.getId() == id)
-				return m;
-		}
-		return null;
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -65,13 +47,6 @@ public class Individual extends Participante {
 		this.administrador = administrador;
 	}
 
-	public ArrayList<Mensagem> getEnviadas() {
-		return enviadas;
-	}
-
-	public void setEnviadas(ArrayList<Mensagem> enviadas) {
-		this.enviadas = enviadas;
-	}
 
 	public ArrayList<Grupo> getGrupos() {
 		return grupos;
@@ -88,7 +63,6 @@ public class Individual extends Participante {
 				this.senha,
 				this.administrador,
 				super.getRecebidas(),
-				this.enviadas,
 				this.grupos);
 	}
 	

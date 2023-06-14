@@ -6,10 +6,13 @@ public class Participante {
 
 	private String nome;
 	private ArrayList<Mensagem> recebidas;
+	private ArrayList<Mensagem> enviadas;
+	
 	
 	public Participante(String nome) {
 		this.nome = nome;
 		this.recebidas = new ArrayList<Mensagem>();
+		this.enviadas = new ArrayList<Mensagem>();
 	}
 	
 	public void adicionar(Mensagem m){
@@ -41,6 +44,30 @@ public class Participante {
 
 	public void setRecebidas(ArrayList<Mensagem> recebidas) {
 		this.recebidas = recebidas;
+	}
+	
+	public ArrayList<Mensagem> getEnviadas() {
+		return enviadas;
+	}
+
+	public void setEnviadas(ArrayList<Mensagem> enviadas) {
+		this.enviadas = enviadas;
+	}
+	
+	public void adicionarMensagem(Mensagem mensagem) {
+		enviadas.add(mensagem);
+	}
+	
+	public void removerMensagem(Mensagem mensagem) {
+		enviadas.remove(mensagem);
+	}
+	
+	public Mensagem localizarMensagem(int id){
+		for(Mensagem m: enviadas){
+			if(m.getId() == id)
+				return m;
+		}
+		return null;
 	}
 	
 	@Override
