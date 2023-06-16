@@ -103,7 +103,8 @@ public class Repositorio {
 		try	{
 			String id, nomeEmitente, nomeDestinatario, texto;
 			Mensagem mensagem;
-			Participante emitente, destinatario;
+			Participante destinatario;
+			Individual emitente;
 			File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath() )  ;
 			
 			Scanner arquivoMensagens = new Scanner(caminhoArquivoMensagens);	 //  pasta do projeto
@@ -118,7 +119,7 @@ public class Repositorio {
 				nomeDestinatario = colunasDoCsv[2];
 				texto = colunasDoCsv[3];
 				
-				emitente = this.localizarParticipante(nomeEmitente);
+				emitente = this.localizarIndividual(nomeEmitente);
 				destinatario = this.localizarParticipante(nomeDestinatario);
 				mensagem = new Mensagem(Integer.parseInt(id), emitente, destinatario, texto);
 
@@ -132,7 +133,7 @@ public class Repositorio {
 	}
 	
 	public void salvarObjetos() {
-		
+		// TODO - terminar este método
 	}
 	
 	/**
@@ -206,16 +207,18 @@ public class Repositorio {
 	
 	/**
 	 * Este método localiza um indivíduo no TreeMap de participantes dado
-	 * o seu nome, isto é, a chave de cada objeto 'Participante'.
+	 * o seu nome, isto é, a chave de cada objeto 'Participante'. Posteriormente,
+	 * é checado se o participante retornado é diferente de 'null' e é uma
+	 * instância da classe 'Individual'.
 	 * 
 	 * @param nome um objeto do tipo 'String' referente ao indivíduo a ser
 	 * localizado
 	 * 
-	 * @return Individual
+	 * @return Individual caso instanceof
 	 */
 	public Individual localizarIndividual(String nome){
 		Participante participante = participantes.get(nome);
-		if (participante != null && participante instanceof Individual)
+		if (participante instanceof Individual)
 			return (Individual) participante;
 		return null;
 	}
