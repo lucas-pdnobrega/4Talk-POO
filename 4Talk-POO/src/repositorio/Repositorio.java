@@ -2,6 +2,7 @@ package repositorio;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -152,10 +153,11 @@ public class Repositorio {
 
 				try	{
 					File caminhoArquivoIndividuos = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
-					FileWriter arquivoIndividuos = new FileWriter(caminhoArquivoIndividuos) ; 
-					for (Individual ind : this.getIndividuos()) {
+					FileWriter arquivoIndividuos = new FileWriter(caminhoArquivoIndividuos);
+					
+					for (Individual ind : this.getIndividuos())
 						arquivoIndividuos.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
-					} 
+					 
 					arquivoIndividuos.close();
 				}
 				catch (Exception e) {
@@ -163,101 +165,47 @@ public class Repositorio {
 				}
 
 				try	{
-					File f = new File( new File(".\\grupos.csv").getCanonicalPath())  ;
-					FileWriter arquivo3 = new FileWriter(f) ; 
-					for(Grupo g : this.getGrupos()) {
-						String texto="";
-						for(Individual ind : g.getIndividuos())
-							texto += ";" + ind.getNome();
-						arquivo3.write(g.getNome() + texto + "\n");	
+					File caminhoArquivoGrupos = new File( new File(".\\grupos.csv").getCanonicalPath())  ;
+					FileWriter arquivoGrupos = new FileWriter(caminhoArquivoGrupos);
+					
+					for (Grupo g : this.getGrupos()) {
+						String individuos = "";
+						
+						for (Individual ind : g.getIndividuos())
+							individuos += ";" + ind.getNome();
+						arquivoGrupos.write(g.getNome() + individuos + "\n");	
 					} 
-					arquivo3.close();
+					arquivoGrupos.close();
 				}
 				catch (Exception e) {
 					throw new RuntimeException("problema na criação do arquivo  grupos "+e.getMessage());
 				}
 	}
 	
-	/**
-	 * Este método adiciona um participante ao TreeMap de participantes do repositório
-	 * 
-	 * @param participante um objeto do tipo 'Participante' a ser adicionado
-	 * 
-	 * @return void
-	 */
 	public void adicionar(Participante participante) {
 		participantes.put(participante.getNome(), participante);
 	}
 	
-	/**
-	 * Este método adiciona uma mensagem ao TreeMap de mensagens do repositório
-	 * 
-	 * @param mensagem um objeto do tipo 'Mensagem' a ser adicionado
-	 * 
-	 * @return void
-	 */
 	public void adicionar(Mensagem mensagem) {
 		mensagens.put(mensagem.getId(), mensagem);
 	}
 	
-	/**
-	 * Este método remove um participante do TreeMap de mensagens
-	 * 
-	 * @param participante um objeto do tipo 'Participante' a ser removido
-	 * 
-	 * @return void
-	 */
 	public void remover(Participante participante) {
 		participantes.remove(participante.getNome());
 	}
 	
-	/**
-	 * Este método remove uma mensagem do TreeMap de mensagens
-	 * 
-	 * @param mensagem um objeto do tipo 'mensagem' a ser removido
-	 * 
-	 * @return void
-	 */
 	public void remover(Mensagem mensagem) {
 		mensagens.remove(mensagem.getId());
 	}
 	
-	/**
-	 * Este método localiza um participante no TreeMap de participantes dado
-	 * o seu nome, isto é, a chave de cada objeto 'Participante'.
-	 * 
-	 * @param nome um objeto do tipo 'String' que representa o nome do
-	 * participante a ser localizado
-	 * 
-	 * @return Participante
-	 */
 	public Participante localizarParticipante(String nome){
 		return participantes.get(nome);
 	}
 	
-	/**
-	 * Este método localiza uma mensagem no TreeMap de mensagens dado
-	 * o seu id, isto é, a chave de cada objeto 'Mensagem'.
-	 * 
-	 * @param id um literal do tipo 'int' referente à mensagem a ser localizada
-	 * 
-	 * @return Mensagem
-	 */
 	public Mensagem localizarMensagem(int id){
 		return mensagens.get(id);
 	}
 	
-	/**
-	 * Este método localiza um indivíduo no TreeMap de participantes dado
-	 * o seu nome, isto é, a chave de cada objeto 'Participante'. Posteriormente,
-	 * é checado se o participante retornado é diferente de 'null' e é uma
-	 * instância da classe 'Individual'.
-	 * 
-	 * @param nome um objeto do tipo 'String' referente ao indivíduo a ser
-	 * localizado
-	 * 
-	 * @return Individual caso instanceof
-	 */
 	public Individual localizarIndividual(String nome){
 		Participante participante = participantes.get(nome);
 		if (participante instanceof Individual)
@@ -267,6 +215,26 @@ public class Repositorio {
 	
 	public TreeMap<String, Participante> getParticipantes() {
 		return participantes;
+	}
+	
+	public ArrayList<Individual> getIndividuos() {
+		ArrayList<Individual> individuos = new ArrayList<>();
+		
+		for (Participante part : participantes.values())
+			if (part instanceof Individual)
+				individuos.add((Individual) part);
+
+		return individuos;
+	}
+	
+	public ArrayList<Grupo> getGrupos() {
+		ArrayList<Grupo> grupos = new ArrayList<>();
+		
+		for (Participante part : participantes.values())
+			if (part instanceof Grupo)
+				grupos.add((Grupo) part);
+	
+		return grupos;
 	}
 
 	public void setParticipantes(TreeMap<String, Participante> participantes) {
