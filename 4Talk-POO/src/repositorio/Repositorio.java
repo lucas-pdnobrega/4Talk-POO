@@ -208,9 +208,18 @@ public class Repositorio {
 	
 	public Individual localizarIndividual(String nome){
 		Participante participante = participantes.get(nome);
+		
 		if (participante instanceof Individual)
 			return (Individual) participante;
+		
 		return null;
+	}
+	
+	public int gerarId() {
+		if (mensagens.isEmpty())
+			return 1;
+		int ultimoId = mensagens.get(mensagens.size()).getId();
+		return ultimoId + 1;
 	}
 	
 	public TreeMap<String, Participante> getParticipantes() {
