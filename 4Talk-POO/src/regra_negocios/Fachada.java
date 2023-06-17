@@ -1,6 +1,48 @@
 package regra_negocios;
 
+import java.util.ArrayList;
+
+import modelo.Grupo;
+import modelo.Individual;
+import modelo.Mensagem;
+import repositorio.Repositorio;
+
 public class Fachada {
+	
+	private Fachada() {}
+	
+	private static Repositorio repositorio = new Repositorio();
+	
+	public static void criarIndividuo(String nomeIndividuo, String senha) throws Exception {
+		
+		nomeIndividuo = nomeIndividuo.trim();
+		
+		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		
+		// 1 - validações das regras de negócio
+		if (individuo != null)
+			throw new Exception("o indivíduo de nome '" + nomeIndividuo + "' já existe.");
+		
+		if (nomeIndividuo.isBlank())
+			throw new Exception("o nome do indivíduo não pode ser vazio ou conter apenas espaços em branco.");
+		
+		if (senha.isBlank())
+			throw new Exception("a senha do indivíduo não pode ser vazia ou conter apenas espaços em branco.");
+		
+		// 2 - criação do indivíduo
+		individuo = new Individual(nomeIndividuo, senha, false);
+		repositorio.adicionar(individuo);
+		repositorio.salvarObjetos();
+	}
+	
+	public static ArrayList<Individual> listarIndividuos() {
+		return repositorio.getIndividuos();	
+	}
+		
+	public static ArrayList<Grupo> listarGrupos() {
+		return repositorio.getGrupos();
+	}
+
 /*
 	public static void criarIndividuo(nomeindivíduo, senha) – cria um indivíduo no repositório, caso inexista no
 
