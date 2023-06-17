@@ -104,8 +104,7 @@ public class Repositorio {
 		try	{
 			String id, nomeEmitente, nomeDestinatario, texto;
 			Mensagem mensagem;
-			Participante destinatario;
-			Individual emitente;
+			Participante emitente, destinatario;
 			File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath() )  ;
 			
 			Scanner arquivoMensagens = new Scanner(caminhoArquivoMensagens);	 //  pasta do projeto
@@ -120,7 +119,7 @@ public class Repositorio {
 				nomeDestinatario = colunasDoCsv[2];
 				texto = colunasDoCsv[3];
 				
-				emitente = this.localizarIndividual(nomeEmitente);
+				emitente = this.localizarParticipante(nomeEmitente);
 				destinatario = this.localizarParticipante(nomeDestinatario);
 				mensagem = new Mensagem(Integer.parseInt(id), emitente, destinatario, texto);
 
