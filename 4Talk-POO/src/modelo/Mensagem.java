@@ -6,11 +6,11 @@ public class Mensagem {
 
 	private int id;
 	private String texto;
-	private Individual emitente;
+	private Participante emitente;
 	private Participante destinatario;
 	private LocalDateTime datahora;
 	
-	public Mensagem(int id, String texto, Individual emitente, Participante destinatario) {
+	public Mensagem(int id, Participante emitente, Participante destinatario, String texto) {
 		this.id = id;
 		this.texto = texto;
 		this.emitente = emitente;
@@ -34,7 +34,7 @@ public class Mensagem {
 		this.texto = texto;
 	}
 
-	public Individual getEmitente() {
+	public Participante getEmitente() {
 		return emitente;
 	}
 
