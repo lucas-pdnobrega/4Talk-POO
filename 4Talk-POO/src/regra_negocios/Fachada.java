@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import modelo.Grupo;
 import modelo.Individual;
-import modelo.Mensagem;
 import repositorio.Repositorio;
 
 public class Fachada {
@@ -33,7 +32,7 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
-	public static void criarAdministrador(String nomeAdministrador, String senha) throws Exception{
+	public static void criarAdministrador(String nomeAdministrador, String senha) throws Exception {
 		nomeAdministrador = nomeAdministrador.trim();
 		
 		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
@@ -68,8 +67,42 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
-	public static void inserirGrupo(String nomeIndividuo, String nomeGrupo) {
+	public static void inserirGrupo(String nomeIndividuo, String nomeGrupo) throws Exception {
+		nomeIndividuo = nomeIndividuo.trim();
+		nomeGrupo = nomeGrupo.trim();
 		
+		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		Grupo grupo = repositorio.localizarGrupo(nomeGrupo);
+		
+		if (individuo == null)
+			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' não existe.");
+		
+		if (grupo == null)
+			throw new Exception("O grupo de nome '" + nomeGrupo + "' não existe.");
+		
+		if (grupo.localizar(nomeIndividuo) != null)
+			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' já está no grupo '" + nomeGrupo + "'.");
+		
+		grupo.adicionar(individuo);	
+	}
+	
+	public static void removerGrupo(String nomeIndividuo, String nomeGrupo) throws Exception {
+		nomeIndividuo = nomeIndividuo.trim();
+		nomeGrupo = nomeGrupo.trim();
+		
+		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		Grupo grupo = repositorio.localizarGrupo(nomeGrupo);
+		
+		if (individuo == null)
+			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' não existe.");
+		
+		if (grupo == null)
+			throw new Exception("O grupo de nome '" + nomeGrupo + "' não existe.");
+		
+		if (grupo.localizar(nomeIndividuo) == null)
+			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' não está no grupo '" + nomeGrupo + "'.");
+		
+		grupo.remover(individuo);
 	}
 	
 	public static ArrayList<Individual> listarIndividuos() {
@@ -82,7 +115,6 @@ public class Fachada {
 
 /*
 	public static void criarIndividuo(nomeindivíduo, senha) – cria um indivíduo no repositório, caso inexista no
-
 	repositório
 
 	public static boolean validarIndividuo(nomeindivíduo,senha) – retorna true se o indivíduo existir no repositório
