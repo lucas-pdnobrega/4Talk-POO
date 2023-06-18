@@ -215,6 +215,15 @@ public class Repositorio {
 		return null;
 	}
 	
+	public Grupo localizarGrupo(String nome) {
+		Participante participante = participantes.get(nome);
+		
+		if (participante instanceof Grupo)
+			return (Grupo) participante;
+
+		return null;
+	}
+	
 	public int gerarId() {
 		if (mensagens.isEmpty())
 			return 1;

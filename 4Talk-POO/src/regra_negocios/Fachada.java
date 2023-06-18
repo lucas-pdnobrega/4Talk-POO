@@ -19,7 +19,6 @@ public class Fachada {
 		
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
 		
-		// 1 - validações das regras de negócio
 		if (individuo != null)
 			throw new Exception("o indivíduo de nome '" + nomeIndividuo + "' já existe.");
 		
@@ -29,10 +28,48 @@ public class Fachada {
 		if (senha.isBlank())
 			throw new Exception("a senha do indivíduo não pode ser vazia ou conter apenas espaços em branco.");
 		
-		// 2 - criação do indivíduo
 		individuo = new Individual(nomeIndividuo, senha, false);
 		repositorio.adicionar(individuo);
 		repositorio.salvarObjetos();
+	}
+	
+	public static void criarAdministrador(String nomeAdministrador, String senha) throws Exception{
+		nomeAdministrador = nomeAdministrador.trim();
+		
+		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
+		
+		if (administrador != null)
+			throw new Exception("o administrador de nome '" + nomeAdministrador + "' já existe.");
+		
+		if (nomeAdministrador.isBlank())
+			throw new Exception("o nome do administrador não pode ser vazio ou conter apenas espaços em branco.");
+		
+		if (senha.isBlank())
+			throw new Exception("a senha do administrador não pode ser vazia ou conter apenas espaços em branco.");
+		
+		administrador = new Individual(nomeAdministrador, senha, true);
+		repositorio.adicionar(administrador);
+		repositorio.salvarObjetos();
+	}
+	
+	public static void criarGrupo(String nomeGrupo) throws Exception {
+		nomeGrupo = nomeGrupo.trim();
+		
+		Grupo grupo = repositorio.localizarGrupo(nomeGrupo);
+		
+		if (grupo != null)
+			throw new Exception("o grupo de nome '" + nomeGrupo + "' já existe.");
+		
+		if (nomeGrupo.isBlank())
+			throw new Exception("o nome do grupo não pode ser vazio ou conter apenas espaços em branco.");
+		
+		grupo = new Grupo(nomeGrupo);
+		repositorio.adicionar(grupo);
+		repositorio.salvarObjetos();
+	}
+	
+	public static void inserirGrupo(String nomeIndividuo, String nomeGrupo) {
+		
 	}
 	
 	public static ArrayList<Individual> listarIndividuos() {
@@ -50,14 +87,12 @@ public class Fachada {
 
 	public static boolean validarIndividuo(nomeindivíduo,senha) – retorna true se o indivíduo existir no repositório
 	public static void criarAdministrador(nomeadministrador, senha) – cria um administrador no repositório, caso
-
 	inexista no repositório
 
 	2
 
 	public static void criarGrupo(nomegrupo) – cria um grupo no repositório, caso inexista no repositório
 	public static void inserirGrupo(nomeindividuo, nomegrupo) – localiza o indivíduo e o grupo no repositório e cria
-
 	o relacionamento entre eles
 
 	public static void removerGrupo(nomeindividuo, nomegrupo) – localiza o indivíduo e o grupo no repositório e
