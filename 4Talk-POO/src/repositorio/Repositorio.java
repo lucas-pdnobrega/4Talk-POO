@@ -2,6 +2,7 @@ package repositorio;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -134,51 +135,51 @@ public class Repositorio {
 	
 	public void salvarObjetos() {
 		//gravar nos arquivos csv os objetos que estão no repositório
-				try	{
-					File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath())  ;
-					FileWriter arquivoMensagens = new FileWriter(caminhoArquivoMensagens); 
-					
-					for (Mensagem msg : mensagens.values()) {
-						arquivoMensagens.write(	msg.getId()+";"+
-								msg.getEmitente().getNome()+";"+
-								msg.getDestinatario().getNome()+";"+
-								msg.getTexto()+"\n");
-					} 
-					arquivoMensagens.close();
-
-				} catch (Exception e){
-					throw new RuntimeException("problema na criação do arquivo mensagens " + e.getMessage());
-				}
-
-				try	{
-					File caminhoArquivoIndividuos = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
-					FileWriter arquivoIndividuos = new FileWriter(caminhoArquivoIndividuos);
-					
-					for (Individual ind : this.getIndividuos())
-						arquivoIndividuos.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
-					 
-					arquivoIndividuos.close();
-				}
-				catch (Exception e) {
-					throw new RuntimeException("problema na criação do arquivo  individuos "+e.getMessage());
-				}
-
-				try	{
-					File caminhoArquivoGrupos = new File( new File(".\\grupos.csv").getCanonicalPath())  ;
-					FileWriter arquivoGrupos = new FileWriter(caminhoArquivoGrupos);
-					
-					for (Grupo g : this.getGrupos()) {
-						String individuos = "";
-						
-						for (Individual ind : g.getIndividuos())
-							individuos += ";" + ind.getNome();
-						arquivoGrupos.write(g.getNome() + individuos + "\n");	
-					} 
-					arquivoGrupos.close();
-				}
-				catch (Exception e) {
-					throw new RuntimeException("problema na criação do arquivo  grupos "+e.getMessage());
-				}
+		try	{
+			File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath())  ;
+			FileWriter arquivoMensagens = new FileWriter(caminhoArquivoMensagens); 
+			
+			for (Mensagem msg : mensagens.values()) {
+				arquivoMensagens.write(	msg.getId()+";"+
+						msg.getEmitente().getNome()+";"+
+						msg.getDestinatario().getNome()+";"+
+						msg.getTexto()+"\n");
+			} 
+			arquivoMensagens.close();
+	
+		} catch (Exception e){
+			throw new RuntimeException("problema na criação do arquivo mensagens " + e.getMessage());
+		}
+	
+		try	{
+			File caminhoArquivoIndividuos = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
+			FileWriter arquivoIndividuos = new FileWriter(caminhoArquivoIndividuos);
+			
+			for (Individual ind : this.getIndividuos())
+				arquivoIndividuos.write(ind.getNome() +";"+ ind.getSenha() +";"+ ind.getAdministrador() +"\n");	
+			 
+			arquivoIndividuos.close();
+		}
+		catch (Exception e) {
+			throw new RuntimeException("problema na criação do arquivo  individuos "+e.getMessage());
+		}
+	
+		try	{
+			File caminhoArquivoGrupos = new File( new File(".\\grupos.csv").getCanonicalPath())  ;
+			FileWriter arquivoGrupos = new FileWriter(caminhoArquivoGrupos);
+			
+			for (Grupo g : this.getGrupos()) {
+				String individuos = "";
+				
+				for (Individual ind : g.getIndividuos())
+					individuos += ";" + ind.getNome();
+				arquivoGrupos.write(g.getNome() + individuos + "\n");	
+			} 
+			arquivoGrupos.close();
+		}
+		catch (Exception e) {
+			throw new RuntimeException("problema na criação do arquivo  grupos "+e.getMessage());
+		}
 	}
 	
 	public void adicionar(Participante participante) {
@@ -211,6 +212,15 @@ public class Repositorio {
 		if (participante instanceof Individual)
 			return (Individual) participante;
 		
+		return null;
+	}
+	
+	public Grupo localizarGrupo(String nome) {
+		Participante participante = participantes.get(nome);
+		
+		if (participante instanceof Grupo)
+			return (Grupo) participante;
+
 		return null;
 	}
 	
