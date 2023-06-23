@@ -2,7 +2,7 @@ package modelo;
 
 import java.time.LocalDateTime;
 
-public class Mensagem {
+public class Mensagem implements Comparable<Mensagem> {
 
 	private int id;
 	private String texto;
@@ -65,6 +65,11 @@ public class Mensagem {
 				this.texto, 
 				emitente.getNome(), 
 				destinatario.getNome());
+	}
+
+	@Override
+	public int compareTo(Mensagem o) {
+		return this.datahora.compareTo(o.getDatahora());
 	}
 	
 }
