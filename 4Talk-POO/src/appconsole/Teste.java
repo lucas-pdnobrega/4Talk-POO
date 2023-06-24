@@ -18,7 +18,7 @@ public class Teste {
 
 	public Teste(){
 		
-		/* BORA JOGAR ZELDA 2 ? */
+		/* BORA JOGAR ZELDA 2 ? buera */
 
 		/**
 		 * PARTICIPANTE INDIVIDUAL
