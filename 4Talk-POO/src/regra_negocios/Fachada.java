@@ -1,6 +1,7 @@
 package regra_negocios;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import modelo.Grupo;
 import modelo.Individual;
@@ -114,7 +115,26 @@ public class Fachada {
 	public static ArrayList<Grupo> listarGrupos() {
 		return repositorio.getGrupos();
 	}
-
+  
+	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) {
+		
+		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
+		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
+		
+		ArrayList<Mensagem> mensagensEmitidas = emitente.getEnviadas();
+		ArrayList<Mensagem> aux = new ArrayList<>();
+		
+		for (Mensagem m : mensagensEmitidas) {
+			if (m.getDestinatario().equals(destinatario)) {
+				aux.add(m);
+			}
+		}
+		
+		Collections.sort(aux);
+		
+		return aux;
+	}
+  
 	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) {
 
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
@@ -136,5 +156,4 @@ public class Fachada {
 			destinatario.adicionar(mensagem);
 		}
 	}
-
 }
