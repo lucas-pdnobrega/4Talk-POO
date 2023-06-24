@@ -115,7 +115,7 @@ public class Fachada {
 	public static ArrayList<Grupo> listarGrupos() {
 		return repositorio.getGrupos();
 	}
-
+  
 	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) {
 		
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
@@ -134,5 +134,26 @@ public class Fachada {
 		
 		return aux;
 	}
-	
+  
+	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) {
+
+		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
+		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
+		Mensagem mensagem = repositorio.criarMensagem(emitente, destinatario, texto);
+
+		emitente.adicionarMensagem(mensagem);
+
+		if (destinatario instanceof Grupo) {
+
+			ArrayList<Individual> individuos = ((Grupo) destinatario).getIndividuos();
+
+			for (Individual i : individuos) {
+				if (!i.equals(emitente)) {
+					i.adicionar(mensagem);
+				}
+			}
+		} else {
+			destinatario.adicionar(mensagem);
+		}
+	}
 }
