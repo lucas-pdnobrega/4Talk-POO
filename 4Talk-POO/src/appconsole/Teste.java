@@ -17,6 +17,8 @@ import regra_negocios.Fachada;
 public class Teste {
 
 	public Teste(){
+		
+		/* BORA JOGAR ZELDA 2 ? */
 
 		/**
 		 * PARTICIPANTE INDIVIDUAL
