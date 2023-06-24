@@ -86,7 +86,8 @@ public class Fachada {
 		if (grupo.localizar(nomeIndividuo) != null)
 			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' já está no grupo '" + nomeGrupo + "'.");
 		
-		grupo.adicionar(individuo);	
+		grupo.adicionar(individuo);
+		repositorio.salvarObjetos();
 	}
 	
 	public static void removerGrupo(String nomeIndividuo, String nomeGrupo) throws Exception {
@@ -106,6 +107,7 @@ public class Fachada {
 			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' não está no grupo '" + nomeGrupo + "'.");
 		
 		grupo.remover(individuo);
+		repositorio.salvarObjetos();
 	}
 	
 	public static ArrayList<Individual> listarIndividuos() {
