@@ -1,6 +1,7 @@
 package regra_negocios;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import modelo.Grupo;
@@ -157,5 +158,52 @@ public class Fachada {
 		} else {
 			destinatario.adicionar(mensagem);
 		}
+	}
+	
+	public static ArrayList<Mensagem> espionarMensagens(String nomeAdministrador, String termo) throws Exception {
+		nomeAdministrador = nomeAdministrador.trim();
+		
+		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
+		
+		if (administrador == null)
+			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
+		
+		if (!administrador.getAdministrador())
+			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não é possui permissão para isso.");
+		
+		Collection<Mensagem> mensagens = repositorio.getMensagens().values();
+		ArrayList<Mensagem> mensagensFiltradas = new ArrayList<>();
+		
+		if (termo.equals("")) {
+			mensagensFiltradas.addAll(mensagens);
+			return mensagensFiltradas;
+		}
+		
+		for (Mensagem msg : mensagens)
+			if (msg.getTexto().contains(termo))
+				mensagensFiltradas.add(msg);
+		
+		return mensagensFiltradas;
+	}
+	
+	public static ArrayList<String> ausentes(String nomeAdministrador) throws Exception {
+		nomeAdministrador = nomeAdministrador.trim();
+		
+		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
+		
+		if (administrador == null)
+			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
+	
+		if (!administrador.getAdministrador())
+			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não possui permissão para isso.");
+		
+		Collection<Participante> participantes = repositorio.getParticipantes().values();
+		ArrayList<String> participantesFiltrados = new ArrayList<>();
+		
+		for (Participante part : participantes)
+			if (part.getEnviadas().isEmpty())
+				participantesFiltrados.add(part.getNome());
+		
+		return participantesFiltrados;
 	}
 }
