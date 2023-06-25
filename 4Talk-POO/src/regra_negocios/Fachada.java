@@ -1,6 +1,8 @@
 package regra_negocios;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import modelo.Grupo;
@@ -157,5 +159,33 @@ public class Fachada {
 		} else {
 			destinatario.adicionar(mensagem);
 		}
+	}
+	
+	public static ArrayList<Mensagem> espionarMensagens(String nomeAdministrador, String termo) throws Exception {
+		nomeAdministrador = nomeAdministrador.trim();
+		
+		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
+		
+		if (administrador == null)
+			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
+		
+		if (!administrador.getAdministrador())
+			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não é administrador.");
+		
+		Collection<Mensagem> mensagens = repositorio.getMensagens().values();
+		ArrayList<Mensagem> listaDeMensagens = new ArrayList<>();
+		
+		if (termo.equals("")) {
+			listaDeMensagens.addAll(mensagens);
+			return listaDeMensagens;
+		}
+		
+		for (Mensagem msg : mensagens)
+			if (msg.getTexto().contains(termo))
+				listaDeMensagens.add(msg);
+		
+		if (listaDeMensagens.isEmpty())
+			throw new Exception("Nenhuma mensagem contém o termo especificado.");
+		return listaDeMensagens;
 	}
 }
