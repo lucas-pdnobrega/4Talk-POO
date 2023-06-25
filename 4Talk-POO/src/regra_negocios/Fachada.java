@@ -169,22 +169,41 @@ public class Fachada {
 			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
 		
 		if (!administrador.getAdministrador())
-			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não é administrador.");
+			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não é possui permissão para isso.");
 		
 		Collection<Mensagem> mensagens = repositorio.getMensagens().values();
-		ArrayList<Mensagem> listaDeMensagens = new ArrayList<>();
+		ArrayList<Mensagem> mensagensFiltradas = new ArrayList<>();
 		
 		if (termo.equals("")) {
-			listaDeMensagens.addAll(mensagens);
-			return listaDeMensagens;
+			mensagensFiltradas.addAll(mensagens);
+			return mensagensFiltradas;
 		}
 		
 		for (Mensagem msg : mensagens)
 			if (msg.getTexto().contains(termo))
-				listaDeMensagens.add(msg);
+				mensagensFiltradas.add(msg);
 		
-		if (listaDeMensagens.isEmpty())
-			throw new Exception("Nenhuma mensagem contém o termo especificado.");
-		return listaDeMensagens;
+		return mensagensFiltradas;
+	}
+	
+	public static ArrayList<String> ausentes(String nomeAdministrador) throws Exception {
+		nomeAdministrador = nomeAdministrador.trim();
+		
+		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
+		
+		if (administrador == null)
+			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
+	
+		if (!administrador.getAdministrador())
+			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não possui permissão para isso.");
+		
+		Collection<Participante> participantes = repositorio.getParticipantes().values();
+		ArrayList<String> participantesFiltrados = new ArrayList<>();
+		
+		for (Participante part : participantes)
+			if (part.getEnviadas().isEmpty())
+				participantesFiltrados.add(part.getNome());
+		
+		return participantesFiltrados;
 	}
 }
