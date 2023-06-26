@@ -40,7 +40,9 @@ public class Fachada {
 	    
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
 		if (individuo == null)
-			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido");
+			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido.");
+		if (individuo.getSenha().equals(null)) 
+			throw new Exception("Não é possível validar uma senha vazia.");
 		else if (individuo.getSenha().equals(senha)) {
 			return true;
 		}
