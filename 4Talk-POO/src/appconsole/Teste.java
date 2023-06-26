@@ -121,7 +121,7 @@ public class Teste {
 		}
 
 
-		try {
+		/*try {
 			System.out.println("\nlistar mensagens enviadas por maria");
 			ArrayList<Mensagem> lista = Fachada.listarMensagensEnviadas("maria");
 			for(Mensagem m : lista)
@@ -134,7 +134,7 @@ public class Teste {
 
 		} catch (Exception e) 	{
 			System.out.println(e.getMessage());
-		}
+		}*/
 
 		try {
 			System.out.println("\nremover jose do grupo");

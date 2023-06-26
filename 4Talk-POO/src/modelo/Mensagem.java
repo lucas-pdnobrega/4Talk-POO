@@ -60,11 +60,11 @@ public class Mensagem implements Comparable<Mensagem> {
 	
 	@Override
 	public String toString() {
-		return String.format("Mensagem%nid = %s%ntexto = %s%nemitente = %s%ndestinatario = %s%ndatahora = %s%n", 
-				this.id, 
-				this.texto, 
-				emitente.getNome(), 
-				destinatario.getNome());
+		return "Mensagem [id=" + id + 
+				", texto=" + texto + 
+				", emitente=" + emitente.getNome() + 
+				", destinatario=" + destinatario.getNome() + 
+				", datahora=" + datahora + "]";
 	}
 
 	@Override

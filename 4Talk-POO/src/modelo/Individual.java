@@ -63,6 +63,7 @@ public class Individual extends Participante {
 				this.senha,
 				this.administrador,
 				super.getRecebidas(),
+				super.getEnviadas(),
 				this.grupos);
 	}
 	
