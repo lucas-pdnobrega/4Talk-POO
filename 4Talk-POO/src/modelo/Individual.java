@@ -55,16 +55,41 @@ public class Individual extends Participante {
 	public void setGrupos(ArrayList<Grupo> grupos) {
 		this.grupos = grupos;
 	}
-	
+
 	@Override
 	public String toString() {
+		ArrayList<String> nomeGrupos = new ArrayList<>();
+
+		if (grupos.size() > 0) {
+			for (Grupo g : grupos) {
+				nomeGrupos.add(g.getNome());
+			}
+		}
+		return "Individual [nome=" + super.getNome() + 
+				", senha=" + senha + 
+				", administrador=" + administrador + 
+				", recebidas =" + super.getRecebidas() +
+				", enviadas =" + super.getEnviadas() +
+				", grupos=" + nomeGrupos + "]";
+	}
+	
+	/*@Override
+	public String toString() {
+		ArrayList<String> nomeGrupos = new ArrayList<>();
+
+		if (grupos.size() > 0) {
+			for (Grupo g : grupos) {
+				nomeGrupos.add(g.getNome());
+			}
+		}
+		
 		return String.format("Individual%nnome = %s%nsenha = %s%nadministrador = %s%nrecebidas = %s%nenviadas = %s%ngrupos = %s%n",
 				super.getNome(),
 				this.senha,
 				this.administrador,
 				super.getRecebidas(),
 				super.getEnviadas(),
-				this.grupos);
-	}
+				nomeGrupos);
+	}*/
 	
 }

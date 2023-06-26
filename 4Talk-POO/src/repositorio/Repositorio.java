@@ -182,9 +182,14 @@ public class Repositorio {
 		}
 	}
 	
-	public Mensagem criarMensagem(Individual emitente, Participante destinatario, String texto) {
-		Mensagem mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
-		this.adicionar(mensagem);
+	public Mensagem criarMensagem(Participante emitente, Participante destinatario, String texto) {
+		Mensagem mensagem;
+		if (emitente instanceof Grupo) {
+			mensagem = new Mensagem(this.gerarId(true), emitente, destinatario, texto);
+		} else {
+			mensagem = new Mensagem(this.gerarId(false), emitente, destinatario, texto);
+			this.adicionar(mensagem);
+		}
 		return mensagem;
 	}
 	
@@ -230,11 +235,11 @@ public class Repositorio {
 		return null;
 	}
 	
-	public int gerarId() {
+	public int gerarId(boolean isGrupo) {
 		if (mensagens.isEmpty())
 			return 1;
 		int ultimoId = mensagens.get(mensagens.size()).getId();
-		return ultimoId + 1;
+		return isGrupo ? ultimoId : ultimoId + 1;
 	}
 	
 	public TreeMap<String, Participante> getParticipantes() {
