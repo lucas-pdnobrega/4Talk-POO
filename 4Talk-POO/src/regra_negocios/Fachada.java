@@ -36,6 +36,19 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
+	public static boolean validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
+	    
+		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		if (individuo == null)
+			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido");
+		else if (individuo.getSenha().equals(senha)) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+			
 	public static void criarAdministrador(String nomeAdministrador, String senha) throws Exception {
 		nomeAdministrador = nomeAdministrador.trim();
 		
