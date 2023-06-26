@@ -36,6 +36,21 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
+	public static boolean validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
+	    
+		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		if (individuo == null)
+			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido.");
+		if (individuo.getSenha().equals(null)) 
+			throw new Exception("Não é possível validar uma senha vazia.");
+		else if (individuo.getSenha().equals(senha)) {
+			return true;
+		}
+		
+		return false;
+		
+	}
+			
 	public static void criarAdministrador(String nomeAdministrador, String senha) throws Exception {
 		nomeAdministrador = nomeAdministrador.trim();
 		
@@ -218,6 +233,23 @@ public class Fachada {
 				mensagensFiltradas.add(msg);
 		
 		return mensagensFiltradas;
+	}
+	
+	public static ArrayList<Mensagem> listarMensagensEnviadas(String nomeindividuo) throws Exception {
+		if (nomeindividuo == null)
+			throw new Exception("O indivíduo de nome '" + nomeindividuo + "' não existe.");
+		ArrayList<Mensagem> mensagensEnviadas = repositorio.localizarIndividual(nomeindividuo).getEnviadas();
+		Collections.sort(mensagensEnviadas);
+		return mensagensEnviadas;
+	}
+  
+	
+	public static ArrayList<Mensagem> listarMensagensRecebidas(String nomeparticipante)throws Exception {
+		if (nomeparticipante == null)
+			throw new Exception("O indivíduo de nome '" + nomeparticipante + "' não existe.");
+		ArrayList<Mensagem> mensagensRecebidas = repositorio.localizarIndividual(nomeparticipante).getRecebidas();
+		Collections.sort(mensagensRecebidas);
+		return mensagensRecebidas;
 	}
 	
 	public static ArrayList<String> ausentes(String nomeAdministrador) throws Exception {
