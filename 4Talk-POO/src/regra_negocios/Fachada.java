@@ -134,10 +134,15 @@ public class Fachada {
 		return repositorio.getGrupos();
 	}
   
-	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) {
+	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception{
 		
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
+		
+		if (emitente == null)
+			throw new Exception("o indivíduo de nome '" + nomeindividuo + "' não existe.");
+		if (destinatario == null)
+			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
 		
 		ArrayList<Mensagem> mensagensEmitidas = emitente.getEnviadas();
 		ArrayList<Mensagem> aux = new ArrayList<>();
@@ -153,12 +158,18 @@ public class Fachada {
 		return aux;
 	}
   
-	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) {
+	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) throws Exception {
 
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
-		Mensagem mensagem = repositorio.criarMensagem(emitente, destinatario, texto);
+		
+		if (emitente == null)
+			throw new Exception("o indivíduo de nome '" + nomeindividuo + "' não existe.");
+		if (destinatario == null)
+			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
 
+		Mensagem mensagem = repositorio.criarMensagem(emitente, destinatario, texto);
+		
 		emitente.adicionarMensagem(mensagem);
 
 		if (destinatario instanceof Grupo) {
@@ -173,6 +184,29 @@ public class Fachada {
 		} else {
 			destinatario.adicionar(mensagem);
 		}
+		
+		repositorio.salvarObjetos();
+	}
+	
+	public static void apagarMensagem(String nomeIndividuo, int id) throws Exception {
+		
+		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		
+		if (individuo == null) {
+			throw new Exception("o indivíduo de nome '" + nomeIndividuo + "' não existe.");
+		}
+		
+		Mensagem mensagem = individuo.localizarMensagem(id);
+		
+		if (mensagem == null) {
+			throw new Exception("a mensagem de id '" + id + "' não existe.");
+		}
+		
+		mensagem.getEmitente().remover(mensagem);
+		mensagem.getDestinatario().removerMensagem(mensagem);
+		
+		repositorio.remover(mensagem);
+		repositorio.salvarObjetos();
 	}
 	
 	public static ArrayList<Mensagem> espionarMensagens(String nomeAdministrador, String termo) throws Exception {
@@ -239,5 +273,8 @@ public class Fachada {
 		return participantesFiltrados;
 	}
 
-	
+	public static ArrayList<Mensagem> listarMensagens() {
+		ArrayList<Mensagem> mensagens = new ArrayList<>(repositorio.getMensagens().values());
+		return mensagens;
+	}
 }
