@@ -39,10 +39,13 @@ public class Fachada {
 	public static boolean validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
 	    
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		
 		if (individuo == null)
 			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido.");
-		if (individuo.getSenha().equals(null)) 
+		
+		if (senha.isEmpty()) 
 			throw new Exception("Não é possível validar uma senha vazia.");
+		
 		else if (individuo.getSenha().equals(senha)) {
 			return true;
 		}
@@ -140,17 +143,20 @@ public class Fachada {
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
 		
 		if (emitente == null)
-			throw new Exception("o indivíduo de nome '" + nomeindividuo + "' não existe.");
+			throw new Exception("o participante de nome '" + nomeindividuo + "' não existe.");
 		if (destinatario == null)
 			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
-		
-		ArrayList<Mensagem> mensagensEmitidas = emitente.getEnviadas();
+
+		ArrayList<Mensagem> mensagensEmitente = emitente.getEnviadas();
+		ArrayList<Mensagem> mensagensDestinatario = destinatario.getEnviadas();
 		ArrayList<Mensagem> aux = new ArrayList<>();
 		
-		for (Mensagem m : mensagensEmitidas) {
-			if (m.getDestinatario().equals(destinatario)) {
-				aux.add(m);
-			}
+		for (Mensagem m : mensagensEmitente) {
+			if (m.getDestinatario().equals(destinatario)) aux.add(m);
+		}
+		
+		for (Mensagem m : mensagensDestinatario) {
+			if (m.getDestinatario().equals(emitente)) aux.add(m);
 		}
 		
 		Collections.sort(aux);
@@ -178,12 +184,16 @@ public class Fachada {
 
 			for (Individual i : individuos) {
 				if (!i.equals(emitente)) {
-					i.adicionar(mensagem);
+					
+					Mensagem reenvio = repositorio.criarMensagem(destinatario, (Participante) i, texto);
+					
+					destinatario.adicionarMensagem(reenvio);
+					i.adicionar(reenvio);
 				}
 			}
-		} else {
-			destinatario.adicionar(mensagem);
-		}
+		} 
+		
+		destinatario.adicionar(mensagem);
 		
 		repositorio.salvarObjetos();
 	}

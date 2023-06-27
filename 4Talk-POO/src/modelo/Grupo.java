@@ -35,19 +35,21 @@ public class Grupo extends Participante {
 	public void setIndividuos(ArrayList<Individual> individuos) {
 		this.individuos = individuos;
 	}
-	
+
 	@Override
 	public String toString() {
-		
-		String nomes = "";
-		
-		for (Individual i : individuos) {
-			nomes += " " + i.getNome();
+		ArrayList<String> nomes = new ArrayList<>();
+
+		if (individuos.size() > 0) {
+			for (Individual i : individuos) {
+				nomes.add(i.getNome());
+			}
 		}
-		
-		return String.format("Grupo%nnome = %s%nmensagens = %s%nindividuos = %s%n", 
-				super.getNome(), 
-				super.getRecebidas(), 
-				nomes);
+		return "Grupo [nome=" + super.getNome() +
+				", enviadas=" + super.getEnviadas() +
+				", recebidas=" + super.getRecebidas() + 
+				", individuos=" + nomes + "]";
 	}
+	
+	
 }
