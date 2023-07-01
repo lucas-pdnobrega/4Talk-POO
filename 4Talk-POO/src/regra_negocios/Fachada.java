@@ -137,7 +137,9 @@ public class Fachada {
 		return repositorio.getGrupos();
 	}
   
-	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception{
+	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception {
+		nomeindividuo = nomeindividuo.trim();
+		nomedestinatario = nomedestinatario.trim();
 		
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
@@ -149,19 +151,19 @@ public class Fachada {
 
 		ArrayList<Mensagem> mensagensEmitente = emitente.getEnviadas();
 		ArrayList<Mensagem> mensagensDestinatario = destinatario.getEnviadas();
-		ArrayList<Mensagem> aux = new ArrayList<>();
+		ArrayList<Mensagem> conversa = new ArrayList<>();
 		
 		for (Mensagem m : mensagensEmitente) {
-			if (m.getDestinatario().equals(destinatario)) aux.add(m);
+			if (m.getDestinatario().equals(destinatario)) conversa.add(m);
 		}
 		
 		for (Mensagem m : mensagensDestinatario) {
-			if (m.getDestinatario().equals(emitente)) aux.add(m);
+			if (m.getDestinatario().equals(emitente)) conversa.add(m);
 		}
 		
-		Collections.sort(aux);
+		Collections.sort(conversa);
 		
-		return aux;
+		return conversa;
 	}
   
 	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) throws Exception {
