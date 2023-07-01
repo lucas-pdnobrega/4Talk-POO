@@ -69,7 +69,7 @@ public class Mensagem implements Comparable<Mensagem> {
 
 	@Override
 	public int compareTo(Mensagem o) {
-		return this.datahora.compareTo(o.getDatahora());
+		return this.datahora.compareTo(o.getData());
 	}
 	
 }
