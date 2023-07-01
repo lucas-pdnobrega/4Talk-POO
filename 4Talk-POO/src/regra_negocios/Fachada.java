@@ -185,7 +185,11 @@ public class Fachada {
 			for (Individual i : individuos) {
 				if (!i.equals(emitente)) {
 					
-					Mensagem reenvio = repositorio.criarMensagem(destinatario, (Participante) i, texto);
+					Mensagem reenvio = repositorio.criarMensagem(
+							destinatario,
+							(Participante) i,
+							String.format("%s/%s", emitente.getNome(), texto)
+							);
 					
 					destinatario.adicionarMensagem(reenvio);
 					i.adicionar(reenvio);
@@ -230,7 +234,7 @@ public class Fachada {
 		if (!administrador.getAdministrador())
 			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não é possui permissão para isso.");
 		
-		Collection<Mensagem> mensagens = repositorio.getMensagens().values();
+		Collection<Mensagem> mensagens = repositorio.getMensagens();
 		ArrayList<Mensagem> mensagensFiltradas = new ArrayList<>();
 		
 		if (termo.equals("")) {
@@ -284,7 +288,7 @@ public class Fachada {
 	}
 
 	public static ArrayList<Mensagem> listarMensagens() {
-		ArrayList<Mensagem> mensagens = new ArrayList<>(repositorio.getMensagens().values());
+		ArrayList<Mensagem> mensagens = new ArrayList<>(repositorio.getMensagens());
 		return mensagens;
 	}
 }
