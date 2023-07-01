@@ -15,7 +15,7 @@ import modelo.Participante;
 public class Repositorio {
 	
 	private TreeMap<String, Participante> participantes = new TreeMap<String, Participante>();
-	private TreeMap<Integer, Mensagem> mensagens = new TreeMap<Integer, Mensagem>();
+	private ArrayList<Mensagem> mensagens = new ArrayList<>();
 	
 	public Repositorio() {
 		carregarObjetos();
@@ -139,7 +139,7 @@ public class Repositorio {
 			File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath())  ;
 			FileWriter arquivoMensagens = new FileWriter(caminhoArquivoMensagens); 
 			
-			for (Mensagem msg : mensagens.values()) {
+			for (Mensagem msg : mensagens) {
 				arquivoMensagens.write(	msg.getId()+";"+
 						msg.getEmitente().getNome()+";"+
 						msg.getDestinatario().getNome()+";"+
@@ -185,9 +185,9 @@ public class Repositorio {
 	public Mensagem criarMensagem(Participante emitente, Participante destinatario, String texto) {
 		Mensagem mensagem;
 		if (emitente instanceof Grupo) {
-			mensagem = new Mensagem(this.gerarId(true), emitente, destinatario, texto);
+			mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
 		} else {
-			mensagem = new Mensagem(this.gerarId(false), emitente, destinatario, texto);
+			mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
 			this.adicionar(mensagem);
 		}
 		return mensagem;
@@ -198,7 +198,7 @@ public class Repositorio {
 	}
 	
 	public void adicionar(Mensagem mensagem) {
-		mensagens.put(mensagem.getId(), mensagem);
+		mensagens.add(mensagem);
 	}
 	
 	public void remover(Participante participante) {
@@ -206,7 +206,12 @@ public class Repositorio {
 	}
 	
 	public void remover(Mensagem mensagem) {
-		mensagens.remove(mensagem.getId());
+		for (Mensagem m : mensagens) {
+			if (m.getId() == mensagem.getId()) {
+				mensagens.remove(mensagem);
+				return;
+			}
+		}
 	}
 	
 	public Participante localizarParticipante(String nome){
@@ -214,7 +219,11 @@ public class Repositorio {
 	}
 	
 	public Mensagem localizarMensagem(int id){
-		return mensagens.get(id);
+		for (Mensagem m: mensagens) {
+			if (m.getId() == id) {
+				return m;
+			}
+		} return null;
 	}
 	
 	public Individual localizarIndividual(String nome){
@@ -235,11 +244,11 @@ public class Repositorio {
 		return null;
 	}
 	
-	public int gerarId(boolean isGrupo) {
+	public int gerarId() {
 		if (mensagens.isEmpty())
 			return 1;
 		int ultimoId = mensagens.get(mensagens.size()).getId();
-		return isGrupo ? ultimoId : ultimoId + 1;
+		return ultimoId + 1;
 	}
 	
 	public TreeMap<String, Participante> getParticipantes() {
@@ -270,11 +279,11 @@ public class Repositorio {
 		this.participantes = participantes;
 	}
 
-	public TreeMap<Integer, Mensagem> getMensagens() {
+	public ArrayList<Mensagem> getMensagens() {
 		return mensagens;
 	}
 
-	public void setMensagens(TreeMap<Integer, Mensagem> mensagens) {
+	public void setMensagens(ArrayList<Mensagem> mensagens) {
 		this.mensagens = mensagens;
 	}
 	
