@@ -189,6 +189,13 @@ public class Repositorio {
 		return mensagem;
 	}
 	
+	public Mensagem criarMensagem(int id, Participante emitente, Participante destinatario, String texto) {
+		Mensagem mensagem;
+		mensagem = new Mensagem(id, emitente, destinatario, texto);
+		this.adicionar(mensagem);
+		return mensagem;
+	}
+	
 	public void adicionar(Participante participante) {
 		participantes.put(participante.getNome(), participante);
 	}

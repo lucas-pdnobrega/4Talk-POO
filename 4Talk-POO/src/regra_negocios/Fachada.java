@@ -188,6 +188,7 @@ public class Fachada {
 				if (!i.equals(emitente)) {
 					
 					Mensagem reenvio = repositorio.criarMensagem(
+							mensagem.getId(),
 							grupo,
 							(Participante) i,
 							String.format("%s/%s", emitente.getNome(), texto)
@@ -225,8 +226,8 @@ public class Fachada {
 			for (Mensagem m : grupo.getEnviadas()) {
 				if (m.getId() == id) {
 					System.out.println(m);
-					m.getDestinatario().remover(m);
 					grupo.removerMensagem(m);
+					m.getDestinatario().remover(m);
 					repositorio.remover(m);
 				}
 			}
