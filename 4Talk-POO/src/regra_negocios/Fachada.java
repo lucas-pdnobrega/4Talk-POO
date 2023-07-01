@@ -214,7 +214,6 @@ public class Fachada {
 		}
 		
 		Mensagem mensagem = individuo.localizarMensagem(id);
-		System.out.println(mensagem);
 		
 		if (mensagem == null) {
 			throw new Exception("a mensagem de id '" + id + "' não existe.");
@@ -225,12 +224,11 @@ public class Fachada {
 			Grupo grupo = (Grupo) mensagem.getDestinatario();
 			for (Mensagem m : grupo.getEnviadas()) {
 				if (m.getId() == id) {
-					System.out.println(m);
-					grupo.removerMensagem(m);
 					m.getDestinatario().remover(m);
 					repositorio.remover(m);
 				}
 			}
+			grupo.getEnviadas().removeIf(m -> m.getId() == id);
 		}
 		
 		mensagem.getEmitente().remover(mensagem);
