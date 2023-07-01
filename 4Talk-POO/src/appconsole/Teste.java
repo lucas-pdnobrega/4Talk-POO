@@ -129,6 +129,7 @@ public class Teste {
 
 			System.out.println("\napagar a ultima mensagem enviada de maria");
 			Mensagem ultima = lista.get(lista.size()-1);
+			System.out.println(ultima);
 			Fachada.apagarMensagem("maria", ultima.getId());
 			System.out.println("apagou a mensagem "+ultima.getId());
 
