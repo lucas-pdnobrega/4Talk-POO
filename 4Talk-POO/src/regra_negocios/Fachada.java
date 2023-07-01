@@ -179,19 +179,22 @@ public class Fachada {
 		emitente.adicionarMensagem(mensagem);
 
 		if (destinatario instanceof Grupo) {
-
-			ArrayList<Individual> individuos = ((Grupo) destinatario).getIndividuos();
+			
+			Grupo grupo = (Grupo) destinatario;
+			
+			ArrayList<Individual> individuos = grupo.getIndividuos();
 
 			for (Individual i : individuos) {
 				if (!i.equals(emitente)) {
 					
 					Mensagem reenvio = repositorio.criarMensagem(
-							destinatario,
+							mensagem.getId(),
+							grupo,
 							(Participante) i,
 							String.format("%s/%s", emitente.getNome(), texto)
 							);
 					
-					destinatario.adicionarMensagem(reenvio);
+					grupo.adicionarMensagem(reenvio);
 					i.adicionar(reenvio);
 				}
 			}
@@ -214,6 +217,18 @@ public class Fachada {
 		
 		if (mensagem == null) {
 			throw new Exception("a mensagem de id '" + id + "' não existe.");
+		}
+		
+		if (mensagem.getDestinatario() instanceof Grupo) {
+			
+			Grupo grupo = (Grupo) mensagem.getDestinatario();
+			for (Mensagem m : grupo.getEnviadas()) {
+				if (m.getId() == id) {
+					m.getDestinatario().remover(m);
+					repositorio.remover(m);
+				}
+			}
+			grupo.getEnviadas().removeIf(m -> m.getId() == id);
 		}
 		
 		mensagem.getEmitente().remover(mensagem);

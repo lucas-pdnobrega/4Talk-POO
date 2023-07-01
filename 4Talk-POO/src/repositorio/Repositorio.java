@@ -184,12 +184,15 @@ public class Repositorio {
 	
 	public Mensagem criarMensagem(Participante emitente, Participante destinatario, String texto) {
 		Mensagem mensagem;
-		if (emitente instanceof Grupo) {
-			mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
-		} else {
-			mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
-			this.adicionar(mensagem);
-		}
+		mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
+		this.adicionar(mensagem);
+		return mensagem;
+	}
+	
+	public Mensagem criarMensagem(int id, Participante emitente, Participante destinatario, String texto) {
+		Mensagem mensagem;
+		mensagem = new Mensagem(id, emitente, destinatario, texto);
+		this.adicionar(mensagem);
 		return mensagem;
 	}
 	
