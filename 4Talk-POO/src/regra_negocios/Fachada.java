@@ -36,21 +36,18 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
-	public static boolean validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
+	public static Individual validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
 	    
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
-		
 		if (individuo == null)
 			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido.");
-		
-		if (senha.isEmpty()) 
+		if (individuo.getSenha().equals(null)) 
 			throw new Exception("Não é possível validar uma senha vazia.");
-		
 		else if (individuo.getSenha().equals(senha)) {
-			return true;
+			return individuo;
 		}
 		
-		return false;
+		return null;
 		
 	}
 			
@@ -137,26 +134,18 @@ public class Fachada {
 		return repositorio.getGrupos();
 	}
   
-	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) throws Exception{
+	public static ArrayList<Mensagem> obterConversa(String nomeindividuo, String nomedestinatario) {
 		
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
 		
-		if (emitente == null)
-			throw new Exception("o participante de nome '" + nomeindividuo + "' não existe.");
-		if (destinatario == null)
-			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
-
-		ArrayList<Mensagem> mensagensEmitente = emitente.getEnviadas();
-		ArrayList<Mensagem> mensagensDestinatario = destinatario.getEnviadas();
+		ArrayList<Mensagem> mensagensEmitidas = emitente.getEnviadas();
 		ArrayList<Mensagem> aux = new ArrayList<>();
 		
-		for (Mensagem m : mensagensEmitente) {
-			if (m.getDestinatario().equals(destinatario)) aux.add(m);
-		}
-		
-		for (Mensagem m : mensagensDestinatario) {
-			if (m.getDestinatario().equals(emitente)) aux.add(m);
+		for (Mensagem m : mensagensEmitidas) {
+			if (m.getDestinatario().equals(destinatario)) {
+				aux.add(m);
+			}
 		}
 		
 		Collections.sort(aux);
@@ -164,18 +153,12 @@ public class Fachada {
 		return aux;
 	}
   
-	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) throws Exception {
+	public static void criarMensagem(String nomeindividuo, String nomedestinatario, String texto) {
 
 		Individual emitente = repositorio.localizarIndividual(nomeindividuo);
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
-		
-		if (emitente == null)
-			throw new Exception("o indivíduo de nome '" + nomeindividuo + "' não existe.");
-		if (destinatario == null)
-			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
-
 		Mensagem mensagem = repositorio.criarMensagem(emitente, destinatario, texto);
-		
+
 		emitente.adicionarMensagem(mensagem);
 
 		if (destinatario instanceof Grupo) {
@@ -184,39 +167,12 @@ public class Fachada {
 
 			for (Individual i : individuos) {
 				if (!i.equals(emitente)) {
-					
-					Mensagem reenvio = repositorio.criarMensagem(destinatario, (Participante) i, texto);
-					
-					destinatario.adicionarMensagem(reenvio);
-					i.adicionar(reenvio);
+					i.adicionar(mensagem);
 				}
 			}
-		} 
-		
-		destinatario.adicionar(mensagem);
-		
-		repositorio.salvarObjetos();
-	}
-	
-	public static void apagarMensagem(String nomeIndividuo, int id) throws Exception {
-		
-		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
-		
-		if (individuo == null) {
-			throw new Exception("o indivíduo de nome '" + nomeIndividuo + "' não existe.");
+		} else {
+			destinatario.adicionar(mensagem);
 		}
-		
-		Mensagem mensagem = individuo.localizarMensagem(id);
-		
-		if (mensagem == null) {
-			throw new Exception("a mensagem de id '" + id + "' não existe.");
-		}
-		
-		mensagem.getEmitente().remover(mensagem);
-		mensagem.getDestinatario().removerMensagem(mensagem);
-		
-		repositorio.remover(mensagem);
-		repositorio.salvarObjetos();
 	}
 	
 	public static ArrayList<Mensagem> espionarMensagens(String nomeAdministrador, String termo) throws Exception {
@@ -283,8 +239,5 @@ public class Fachada {
 		return participantesFiltrados;
 	}
 
-	public static ArrayList<Mensagem> listarMensagens() {
-		ArrayList<Mensagem> mensagens = new ArrayList<>(repositorio.getMensagens().values());
-		return mensagens;
-	}
+	
 }
