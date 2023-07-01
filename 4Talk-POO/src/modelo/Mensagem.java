@@ -50,11 +50,11 @@ public class Mensagem implements Comparable<Mensagem> {
 		this.destinatario = destinatario;
 	}
 
-	public LocalDateTime getDatahora() {
+	public LocalDateTime getData() {
 		return datahora;
 	}
 
-	public void setDatahora(LocalDateTime datahora) {
+	public void setData(LocalDateTime datahora) {
 		this.datahora = datahora;
 	}
 	

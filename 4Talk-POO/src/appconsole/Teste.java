@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import modelo.Grupo;
 import modelo.Individual;
 import modelo.Mensagem;
-import regra_negocios.Fachada;
+import regras_negocio.Fachada;
 
 public class Teste {
 
