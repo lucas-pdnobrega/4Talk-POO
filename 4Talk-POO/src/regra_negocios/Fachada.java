@@ -36,7 +36,7 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
-	public static boolean validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
+	public static Individual validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
 	    
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
 		
@@ -46,11 +46,11 @@ public class Fachada {
 		if (senha.isEmpty()) 
 			throw new Exception("Não é possível validar uma senha vazia.");
 		
-		else if (individuo.getSenha().equals(senha)) {
-			return true;
+		if (individuo.getSenha().equals(senha)) {
+			return individuo;
 		}
 		
-		return false;
+		return null;
 		
 	}
 			
