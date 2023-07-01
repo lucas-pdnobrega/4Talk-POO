@@ -247,7 +247,7 @@ public class Repositorio {
 	public int gerarId() {
 		if (mensagens.isEmpty())
 			return 1;
-		int ultimoId = mensagens.get(mensagens.size()).getId();
+		int ultimoId = mensagens.get(mensagens.size() - 1).getId();
 		return ultimoId + 1;
 	}
 	
