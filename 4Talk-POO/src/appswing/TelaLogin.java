@@ -1,7 +1,7 @@
 /**********************************
  * IFPB - Curso Superior de Tec. em Sist. para Internet
  * Pesist~encia de Objetos
- * Prof. Fausto Maranhão Ayres
+ * Prof. Fausto Maranhï¿½o Ayres
  **********************************/
 
 package appswing;
@@ -103,7 +103,7 @@ public class TelaLogin {
 						frame.dispose();
 					}
 					else
-						label.setText("individuo nao encontrado: ");
+						label.setText("Individuo nÃ£o encontrado: ");
 
 				}
 				catch(Exception ex) {

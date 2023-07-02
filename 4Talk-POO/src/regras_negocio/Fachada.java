@@ -41,7 +41,7 @@ public class Fachada {
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
 		
 		if (individuo == null)
-			throw new Exception("o indivíduo " + nomeIndividuo + "é inválido.");
+			throw new Exception("O indivíduo '" + nomeIndividuo + "' é inválido.");
 		
 		if (senha.isEmpty()) 
 			throw new Exception("Não é possível validar uma senha vazia.");
@@ -60,13 +60,13 @@ public class Fachada {
 		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
 		
 		if (administrador != null)
-			throw new Exception("o administrador de nome '" + nomeAdministrador + "' já existe.");
+			throw new Exception("O administrador de nome '" + nomeAdministrador + "' já existe.");
 		
 		if (nomeAdministrador.isBlank())
-			throw new Exception("o nome do administrador não pode ser vazio ou conter apenas espaços em branco.");
+			throw new Exception("O nome do administrador não pode ser vazio ou conter apenas espaços em branco.");
 		
 		if (senha.isBlank())
-			throw new Exception("a senha do administrador não pode ser vazia ou conter apenas espaços em branco.");
+			throw new Exception("A senha do administrador não pode ser vazia ou conter apenas espaços em branco.");
 		
 		administrador = new Individual(nomeAdministrador, senha, true);
 		repositorio.adicionar(administrador);
@@ -79,10 +79,10 @@ public class Fachada {
 		Grupo grupo = repositorio.localizarGrupo(nomeGrupo);
 		
 		if (grupo != null)
-			throw new Exception("o grupo de nome '" + nomeGrupo + "' já existe.");
+			throw new Exception("O grupo de nome '" + nomeGrupo + "' já existe.");
 		
 		if (nomeGrupo.isBlank())
-			throw new Exception("o nome do grupo não pode ser vazio ou conter apenas espaços em branco.");
+			throw new Exception("O nome do grupo não pode ser vazio ou conter apenas espaços em branco.");
 		
 		grupo = new Grupo(nomeGrupo);
 		repositorio.adicionar(grupo);
@@ -145,9 +145,9 @@ public class Fachada {
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
 		
 		if (emitente == null)
-			throw new Exception("o participante de nome '" + nomeindividuo + "' não existe.");
+			throw new Exception("O participante de nome '" + nomeindividuo + "' não existe.");
 		if (destinatario == null)
-			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
+			throw new Exception("O participante de nome '" + nomedestinatario + "' não existe.");
 
 		ArrayList<Mensagem> mensagensEmitente = emitente.getEnviadas();
 		ArrayList<Mensagem> mensagensDestinatario = destinatario.getEnviadas();
@@ -172,9 +172,9 @@ public class Fachada {
 		Participante destinatario = repositorio.localizarParticipante(nomedestinatario);
 		
 		if (emitente == null)
-			throw new Exception("o indivíduo de nome '" + nomeindividuo + "' não existe.");
+			throw new Exception("O indivíduo de nome '" + nomeindividuo + "' não existe.");
 		if (destinatario == null)
-			throw new Exception("o participante de nome '" + nomedestinatario + "' não existe.");
+			throw new Exception("O participante de nome '" + nomedestinatario + "' não existe.");
 
 		Mensagem mensagem = repositorio.criarMensagem(emitente, destinatario, texto);
 		
@@ -212,13 +212,13 @@ public class Fachada {
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
 		
 		if (individuo == null) {
-			throw new Exception("o indivíduo de nome '" + nomeIndividuo + "' não existe.");
+			throw new Exception("O indivíduo de nome '" + nomeIndividuo + "' não existe.");
 		}
 		
 		Mensagem mensagem = individuo.localizarMensagem(id);
 		
 		if (mensagem == null) {
-			throw new Exception("a mensagem de id '" + id + "' não existe ou não lhe pertence.");
+			throw new Exception("A mensagem de id '" + id + "' não existe ou não lhe pertence.");
 		}
 		
 		if (mensagem.getDestinatario() instanceof Grupo) {
@@ -246,10 +246,10 @@ public class Fachada {
 		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
 		
 		if (administrador == null)
-			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
+			throw new Exception("O indivíduo de nome '" + nomeAdministrador + "' não existe.");
 		
 		if (!administrador.getAdministrador())
-			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não é possui permissão para isso.");
+			throw new Exception("O indivíduo de nome'" + nomeAdministrador + "' não é possui permissão para isso.");
 		
 		Collection<Mensagem> mensagens = repositorio.getMensagens();
 		ArrayList<Mensagem> mensagensFiltradas = new ArrayList<>();
@@ -289,10 +289,10 @@ public class Fachada {
 		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
 		
 		if (administrador == null)
-			throw new Exception("o indivíduo de nome '" + nomeAdministrador + "' não existe.");
+			throw new Exception("O indivíduo de nome '" + nomeAdministrador + "' não existe.");
 	
 		if (!administrador.getAdministrador())
-			throw new Exception("o indivíduo de nome'" + nomeAdministrador + "' não possui permissão para isso.");
+			throw new Exception("O indivíduo de nome'" + nomeAdministrador + "' não possui permissão para isso.");
 		
 		Collection<Participante> participantes = repositorio.getParticipantes().values();
 		ArrayList<String> participantesFiltrados = new ArrayList<>();

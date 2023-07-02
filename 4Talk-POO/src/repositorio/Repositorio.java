@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -111,7 +112,7 @@ public class Repositorio {
 			Participante emitente, destinatario;
 			File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath() )  ;
 			
-			Scanner arquivoMensagens = new Scanner(caminhoArquivoMensagens);	 //  pasta do projeto
+			Scanner arquivoMensagens = new Scanner(caminhoArquivoMensagens); //  pasta do projeto
 
 			while (arquivoMensagens.hasNextLine()) {
 				linha = arquivoMensagens.nextLine().trim();		
@@ -122,7 +123,12 @@ public class Repositorio {
 				texto = colunasDoCsv[1];
 				nomeEmitente = colunasDoCsv[2];
 				nomeDestinatario = colunasDoCsv[3];
-				dataHora = LocalDateTime.parse(colunasDoCsv[4]);
+				
+				DateTimeFormatterBuilder dateBuilder = new DateTimeFormatterBuilder();
+				dateBuilder.parseCaseInsensitive();
+				dateBuilder.append(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+				
+				dataHora = LocalDateTime.parse(colunasDoCsv[4], dateBuilder.toFormatter());
 				
 				emitente = this.localizarParticipante(nomeEmitente);
 				destinatario = this.localizarParticipante(nomeDestinatario);
