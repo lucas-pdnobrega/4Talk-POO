@@ -1,21 +1,22 @@
 package modelo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Mensagem {
+public class Mensagem implements Comparable<Mensagem> {
 
 	private int id;
 	private String texto;
-	private Individual emitente;
+	private Participante emitente;
 	private Participante destinatario;
 	private LocalDateTime datahora;
 	
-	public Mensagem(int id, String texto, Individual emitente, Participante destinatario) {
+	public Mensagem(int id, Participante emitente, Participante destinatario, String texto, LocalDateTime dataHora) {
 		this.id = id;
 		this.texto = texto;
 		this.emitente = emitente;
 		this.destinatario = destinatario;
-		this.datahora = LocalDateTime.now();
+		this.datahora = dataHora;
 	}
 
 	public int getId() {
@@ -34,7 +35,7 @@ public class Mensagem {
 		this.texto = texto;
 	}
 
-	public Individual getEmitente() {
+	public Participante getEmitente() {
 		return emitente;
 	}
 
@@ -50,21 +51,31 @@ public class Mensagem {
 		this.destinatario = destinatario;
 	}
 
-	public LocalDateTime getDatahora() {
-		return datahora;
+	public String getData() {
+		return this.datahora.format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
 	}
 
-	public void setDatahora(LocalDateTime datahora) {
-		this.datahora = datahora;
+	public void setData(String datahora) {
+		this.datahora = LocalDateTime.parse(datahora, DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("Mensagem%nid = %s%ntexto = %s%nemitente = %s%ndestinatario = %s%ndatahora = %s%n", 
-				this.id, 
-				this.texto, 
-				emitente.getNome(), 
-				destinatario.getNome());
+		return "Mensagem [id=" + id + 
+				", texto=" + texto + 
+				", emitente=" + emitente.getNome() + 
+				", destinatario=" + destinatario.getNome() + 
+				", datahora=" + datahora + "]";
+	}
+
+	@Override
+	public int compareTo(Mensagem outraMsg) {
+		if (this.id < outraMsg.id)
+			return -1;
+		else if (this.id > outraMsg.id)
+			return 1;
+		else
+			return 0;
 	}
 	
 }

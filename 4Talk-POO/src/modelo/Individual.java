@@ -6,14 +6,12 @@ public class Individual extends Participante {
 
 	private String senha;
 	private boolean administrador;
-	private ArrayList<Mensagem> enviadas;
 	private ArrayList<Grupo> grupos;
 	
 	public Individual(String nome, String senha, boolean administrador) {
 		super(nome);
 		this.senha = senha;
 		this.administrador = administrador;
-		this.enviadas = new ArrayList<Mensagem>();
 		this.grupos = new ArrayList<Grupo>();
 	}
 	
@@ -33,22 +31,6 @@ public class Individual extends Participante {
 		return null;
 	}
 	
-	public void adicionarMensagem(Mensagem mensagem) {
-		enviadas.add(mensagem);
-	}
-	
-	public void removerMensagem(Mensagem mensagem) {
-		enviadas.remove(mensagem);
-	}
-	
-	public Mensagem localizarMensagem(int id){
-		for(Mensagem m: enviadas){
-			if(m.getId() == id)
-				return m;
-		}
-		return null;
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -57,7 +39,7 @@ public class Individual extends Participante {
 		this.senha = senha;
 	}
 
-	public boolean isAdministrador() {
+	public boolean getAdministrador() {
 		return administrador;
 	}
 
@@ -65,13 +47,6 @@ public class Individual extends Participante {
 		this.administrador = administrador;
 	}
 
-	public ArrayList<Mensagem> getEnviadas() {
-		return enviadas;
-	}
-
-	public void setEnviadas(ArrayList<Mensagem> enviadas) {
-		this.enviadas = enviadas;
-	}
 
 	public ArrayList<Grupo> getGrupos() {
 		return grupos;
@@ -80,16 +55,41 @@ public class Individual extends Participante {
 	public void setGrupos(ArrayList<Grupo> grupos) {
 		this.grupos = grupos;
 	}
-	
+
 	@Override
 	public String toString() {
+		ArrayList<String> nomeGrupos = new ArrayList<>();
+
+		if (grupos.size() > 0) {
+			for (Grupo g : grupos) {
+				nomeGrupos.add(g.getNome());
+			}
+		}
+		return "Individual [nome=" + super.getNome() + 
+				", senha=" + senha + 
+				", administrador=" + administrador + 
+				", recebidas =" + super.getRecebidas() +
+				", enviadas =" + super.getEnviadas() +
+				", grupos=" + nomeGrupos + "]";
+	}
+	
+	/*@Override
+	public String toString() {
+		ArrayList<String> nomeGrupos = new ArrayList<>();
+
+		if (grupos.size() > 0) {
+			for (Grupo g : grupos) {
+				nomeGrupos.add(g.getNome());
+			}
+		}
+		
 		return String.format("Individual%nnome = %s%nsenha = %s%nadministrador = %s%nrecebidas = %s%nenviadas = %s%ngrupos = %s%n",
 				super.getNome(),
 				this.senha,
 				this.administrador,
 				super.getRecebidas(),
-				this.enviadas,
-				this.grupos);
-	}
+				super.getEnviadas(),
+				nomeGrupos);
+	}*/
 	
 }
