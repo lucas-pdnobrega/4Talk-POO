@@ -233,8 +233,8 @@ public class Fachada {
 			grupo.getEnviadas().removeIf(m -> m.getId() == id);
 		}
 		
-		mensagem.getEmitente().remover(mensagem);
-		mensagem.getDestinatario().removerMensagem(mensagem);
+		mensagem.getEmitente().removerMensagem(mensagem);
+		mensagem.getDestinatario().remover(mensagem);
 		
 		repositorio.remover(mensagem);
 		repositorio.salvarObjetos();
