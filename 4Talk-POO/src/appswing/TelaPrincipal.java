@@ -93,7 +93,7 @@ public class TelaPrincipal {
 		mnLogar.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (TelaPrincipal.logado != null) {
-					JOptionPane.showMessageDialog(null, "Fa�a logoff antes de logar");
+					JOptionPane.showMessageDialog(null, "Faça logoff antes de logar");
 					;
 					return;
 				}

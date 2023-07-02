@@ -1,5 +1,6 @@
 package regras_negocio;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -218,7 +219,7 @@ public class Fachada {
 		Mensagem mensagem = individuo.localizarMensagem(id);
 		
 		if (mensagem == null) {
-			throw new Exception("a mensagem de id '" + id + "' não existe.");
+			throw new Exception("a mensagem de id '" + id + "' não existe ou não lhe pertence.");
 		}
 		
 		if (mensagem.getDestinatario() instanceof Grupo) {
