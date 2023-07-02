@@ -122,7 +122,7 @@ public class Repositorio {
 				texto = colunasDoCsv[1];
 				nomeEmitente = colunasDoCsv[2];
 				nomeDestinatario = colunasDoCsv[3];
-				dataHora = LocalDateTime.parse(colunasDoCsv[4], DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+				dataHora = LocalDateTime.parse(colunasDoCsv[4]);
 				
 				emitente = this.localizarParticipante(nomeEmitente);
 				destinatario = this.localizarParticipante(nomeDestinatario);
