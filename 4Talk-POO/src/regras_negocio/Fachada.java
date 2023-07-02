@@ -226,15 +226,15 @@ public class Fachada {
 			Grupo grupo = (Grupo) mensagem.getDestinatario();
 			for (Mensagem m : grupo.getEnviadas()) {
 				if (m.getId() == id) {
-					m.getDestinatario().remover(m);
+					m.getDestinatario().removerRecebida(m);
 					repositorio.remover(m);
 				}
 			}
 			grupo.getEnviadas().removeIf(m -> m.getId() == id);
 		}
 		
-		mensagem.getEmitente().removerMensagem(mensagem);
-		mensagem.getDestinatario().remover(mensagem);
+		mensagem.getEmitente().removerEnviada(mensagem);
+		mensagem.getDestinatario().removerRecebida(mensagem);
 		
 		repositorio.remover(mensagem);
 		repositorio.salvarObjetos();
