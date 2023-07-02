@@ -1,6 +1,7 @@
 package modelo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Mensagem implements Comparable<Mensagem> {
 
@@ -10,12 +11,12 @@ public class Mensagem implements Comparable<Mensagem> {
 	private Participante destinatario;
 	private LocalDateTime datahora;
 	
-	public Mensagem(int id, Participante emitente, Participante destinatario, String texto) {
+	public Mensagem(int id, Participante emitente, Participante destinatario, String texto, LocalDateTime dataHora) {
 		this.id = id;
 		this.texto = texto;
 		this.emitente = emitente;
 		this.destinatario = destinatario;
-		this.datahora = LocalDateTime.now();
+		this.datahora = dataHora;
 	}
 
 	public int getId() {
@@ -50,12 +51,12 @@ public class Mensagem implements Comparable<Mensagem> {
 		this.destinatario = destinatario;
 	}
 
-	public LocalDateTime getData() {
-		return datahora;
+	public String getData() {
+		return this.datahora.format(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
 	}
 
-	public void setData(LocalDateTime datahora) {
-		this.datahora = datahora;
+	public void setData(String datahora) {
+		this.datahora = LocalDateTime.parse(datahora, DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
 	}
 	
 	@Override
@@ -68,8 +69,13 @@ public class Mensagem implements Comparable<Mensagem> {
 	}
 
 	@Override
-	public int compareTo(Mensagem o) {
-		return this.datahora.compareTo(o.getData());
+	public int compareTo(Mensagem outraMsg) {
+		if (this.id < outraMsg.id)
+			return -1;
+		else if (this.id > outraMsg.id)
+			return 1;
+		else
+			return 0;
 	}
 	
 }

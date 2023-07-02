@@ -18,7 +18,7 @@ public class Participante {
 	public void adicionar(Mensagem m){
 		recebidas.add(m);
 	}
-	public void remover(Mensagem m){
+	public void removerRecebida(Mensagem m){
 		recebidas.remove(m);
 	}
 	
@@ -58,7 +58,7 @@ public class Participante {
 		enviadas.add(mensagem);
 	}
 	
-	public void removerMensagem(Mensagem mensagem) {
+	public void removerEnviada(Mensagem mensagem) {
 		enviadas.remove(mensagem);
 	}
 	

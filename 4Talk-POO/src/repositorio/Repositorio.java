@@ -2,7 +2,9 @@ package repositorio;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -103,28 +105,38 @@ public class Repositorio {
 		}
 		
 		try	{
-			String id, nomeEmitente, nomeDestinatario, texto;
+			String nomeEmitente, nomeDestinatario, texto;
+			int id;
+			LocalDateTime dataHora;
 			Mensagem mensagem;
 			Participante emitente, destinatario;
 			File caminhoArquivoMensagens = new File( new File(".\\mensagens.csv").getCanonicalPath() )  ;
 			
-			Scanner arquivoMensagens = new Scanner(caminhoArquivoMensagens);	 //  pasta do projeto
+			Scanner arquivoMensagens = new Scanner(caminhoArquivoMensagens); //  pasta do projeto
 
 			while (arquivoMensagens.hasNextLine()) {
 				linha = arquivoMensagens.nextLine().trim();		
 				colunasDoCsv = linha.split(";");
 				//System.out.println(Arrays.toString(partes));
 				
-				id = colunasDoCsv[0];
-				nomeEmitente = colunasDoCsv[1];
-				nomeDestinatario = colunasDoCsv[2];
-				texto = colunasDoCsv[3];
+				id = Integer.parseInt(colunasDoCsv[0]);
+				texto = colunasDoCsv[1];
+				nomeEmitente = colunasDoCsv[2];
+				nomeDestinatario = colunasDoCsv[3];
+				
+				DateTimeFormatterBuilder dateBuilder = new DateTimeFormatterBuilder();
+				dateBuilder.parseCaseInsensitive();
+				dateBuilder.append(DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss"));
+				
+				dataHora = LocalDateTime.parse(colunasDoCsv[4], dateBuilder.toFormatter());
 				
 				emitente = this.localizarParticipante(nomeEmitente);
 				destinatario = this.localizarParticipante(nomeDestinatario);
-				mensagem = new Mensagem(Integer.parseInt(id), emitente, destinatario, texto);
-
+				mensagem = new Mensagem(id, emitente, destinatario, texto, dataHora);
+				
 				this.adicionar(mensagem);
+				emitente.adicionarMensagem(mensagem);
+				destinatario.adicionar(mensagem);
 			} 
 			arquivoMensagens.close();
 		}
@@ -140,10 +152,13 @@ public class Repositorio {
 			FileWriter arquivoMensagens = new FileWriter(caminhoArquivoMensagens); 
 			
 			for (Mensagem msg : mensagens) {
-				arquivoMensagens.write(	msg.getId()+";"+
-						msg.getEmitente().getNome()+";"+
-						msg.getDestinatario().getNome()+";"+
-						msg.getTexto()+"\n");
+				arquivoMensagens.write(
+					msg.getId()+";"+
+					msg.getTexto()+";"+
+					msg.getEmitente().getNome()+";"+
+					msg.getDestinatario().getNome()+";"+
+					msg.getData()+"\n"
+				);
 			} 
 			arquivoMensagens.close();
 	
@@ -152,7 +167,7 @@ public class Repositorio {
 		}
 	
 		try	{
-			File caminhoArquivoIndividuos = new File( new File(".\\individuos.csv").getCanonicalPath())  ;
+			File caminhoArquivoIndividuos = new File( new File(".\\individuos.csv").getCanonicalPath());
 			FileWriter arquivoIndividuos = new FileWriter(caminhoArquivoIndividuos);
 			
 			for (Individual ind : this.getIndividuos())
@@ -184,14 +199,14 @@ public class Repositorio {
 	
 	public Mensagem criarMensagem(Participante emitente, Participante destinatario, String texto) {
 		Mensagem mensagem;
-		mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto);
+		mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto, LocalDateTime.now());
 		this.adicionar(mensagem);
 		return mensagem;
 	}
 	
 	public Mensagem criarMensagem(int id, Participante emitente, Participante destinatario, String texto) {
 		Mensagem mensagem;
-		mensagem = new Mensagem(id, emitente, destinatario, texto);
+		mensagem = new Mensagem(id, emitente, destinatario, texto, LocalDateTime.now());
 		this.adicionar(mensagem);
 		return mensagem;
 	}
