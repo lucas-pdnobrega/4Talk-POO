@@ -197,13 +197,15 @@ public class Repositorio {
 		}
 	}
 	
+	// TODO - remover este método
 	public Mensagem criarMensagem(Participante emitente, Participante destinatario, String texto) {
 		Mensagem mensagem;
 		mensagem = new Mensagem(this.gerarId(), emitente, destinatario, texto, LocalDateTime.now());
 		this.adicionar(mensagem);
 		return mensagem;
 	}
-	
+
+	// TODO - remover este método
 	public Mensagem criarMensagem(int id, Participante emitente, Participante destinatario, String texto) {
 		Mensagem mensagem;
 		mensagem = new Mensagem(id, emitente, destinatario, texto, LocalDateTime.now());
@@ -224,12 +226,7 @@ public class Repositorio {
 	}
 	
 	public void remover(Mensagem mensagem) {
-		for (Mensagem m : mensagens) {
-			if (m.getId() == mensagem.getId()) {
-				mensagens.remove(mensagem);
-				return;
-			}
-		}
+		mensagens.remove(mensagem);
 	}
 	
 	public Participante localizarParticipante(String nome){

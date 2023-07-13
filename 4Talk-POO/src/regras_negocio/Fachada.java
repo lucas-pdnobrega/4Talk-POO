@@ -20,10 +20,10 @@ public class Fachada {
 		
 		nomeIndividuo = nomeIndividuo.trim();
 		
-		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
+		Participante individuo = repositorio.localizarParticipante(nomeIndividuo);
 		
 		if (individuo != null)
-			throw new Exception("o indivíduo de nome '" + nomeIndividuo + "' já existe.");
+			throw new Exception("o participante de nome '" + nomeIndividuo + "' já existe.");
 		
 		if (nomeIndividuo.isBlank())
 			throw new Exception("o nome do indivíduo não pode ser vazio ou conter apenas espaços em branco.");
@@ -36,7 +36,7 @@ public class Fachada {
 		repositorio.salvarObjetos();
 	}
 	
-	public static Individual validarIndividuo (String nomeIndividuo, String senha) throws  Exception{
+	public static Individual validarIndividuo(String nomeIndividuo, String senha) throws  Exception{
 	    
 		Individual individuo = repositorio.localizarIndividual(nomeIndividuo);
 		
@@ -57,10 +57,10 @@ public class Fachada {
 	public static void criarAdministrador(String nomeAdministrador, String senha) throws Exception {
 		nomeAdministrador = nomeAdministrador.trim();
 		
-		Individual administrador = repositorio.localizarIndividual(nomeAdministrador);
+		Participante administrador = repositorio.localizarParticipante(nomeAdministrador);
 		
 		if (administrador != null)
-			throw new Exception("O administrador de nome '" + nomeAdministrador + "' já existe.");
+			throw new Exception("O participante de nome '" + nomeAdministrador + "' já existe.");
 		
 		if (nomeAdministrador.isBlank())
 			throw new Exception("O nome do administrador não pode ser vazio ou conter apenas espaços em branco.");
@@ -75,11 +75,11 @@ public class Fachada {
 	
 	public static void criarGrupo(String nomeGrupo) throws Exception {
 		nomeGrupo = nomeGrupo.trim();
-		
-		Grupo grupo = repositorio.localizarGrupo(nomeGrupo);
+
+		Participante grupo = repositorio.localizarParticipante(nomeGrupo);
 		
 		if (grupo != null)
-			throw new Exception("O grupo de nome '" + nomeGrupo + "' já existe.");
+			throw new Exception("O participante de nome '" + nomeGrupo + "' já existe.");
 		
 		if (nomeGrupo.isBlank())
 			throw new Exception("O nome do grupo não pode ser vazio ou conter apenas espaços em branco.");
